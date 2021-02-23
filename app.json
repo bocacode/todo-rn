@@ -1,0 +1,12 @@
+{
+  "name": "todoRNEXPO",
+  "displayName": "todoRNEXPO",
+  "expo": {
+    "name": "todoRNEXPO",
+    "slug": "todoRNEXPO",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
