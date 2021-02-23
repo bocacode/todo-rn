@@ -6,6 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 
 import HomeText from './components/HomeText'
 import TodosScreen from './screens/TodosScreen'
+import NewTodoScreen from './screens/NewTodoScreen'
 
 export default function App() {
   const myName = 'Jonathan'
@@ -16,7 +17,7 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name='Home' component={TodosScreen} options={{ title: 'Welcome' }} />
-        {/* <Stack.Screen name='Profile' component={ProfileScreen} /> */}
+        <Stack.Screen name='NewTodo' component={NewTodoScreen} options={{ title: 'New Todo' }} />
       </Stack.Navigator>
     </NavigationContainer>
   )

@@ -1,16 +1,37 @@
-import React, { useEffect } from 'react'
-import { StyleSheet, Text, View, Button, SafeAreaView, ScrollView, Alert } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  SafeAreaView,
+  ScrollView,
+  Alert,
+  Image,
+  TouchableOpacity,
+} from 'react-native'
 
-function TodosScreen() {
+function TodosScreen({ navigation, route }) {
+  const [data, setData] = useState()
+
   useEffect(() => {
-    console.log('component loaded')
+    console.log('here is data', data)
   }, [])
+
+  const getData = () => {
+    fetch('https://todo-too-rb-api.web.app/tasks/3m5rYt8z2fQKDDm0wlgrxg3hFh82')
+      // .then(resp => console.log(resp.json()))
+      .then(res => setData(res.json()))
+      .catch(err => console.log(err))
+  }
+
+  const { name } = route
 
   return (
     <View style={styles.container}>
       <SafeAreaView>
         <ScrollView>
-          <HomeText myName={myName} />
+          {/* <HomeText myName={myName} /> */}
           <Button
             title='Button'
             color='red'
@@ -25,13 +46,28 @@ function TodosScreen() {
                       onPress: () => console.log('Cancel Pressed'),
                       style: 'cancel',
                     },
-                    { text: 'OK', onPress: () => console.log('OK Pressed') },
+                    { text: 'OK', onPress: () => getData() },
                   ],
                   { cancelable: false }
                 )
               // console.log('my button was pressed'), Alert.alert(`hi, ${myName}`)
             }}
           />
+          <TouchableOpacity onPress={() => navigation.navigate('NewTodo')}>
+            <Image
+              style={{ width: 200, height: 200 }}
+              source={{
+                uri: 'https://pbs.twimg.com/profile_images/1273306124863889409/MAgy1kHL_400x400.jpg',
+              }}
+            />
+          </TouchableOpacity>
+          <Text>no place like => {name}</Text>
+
+          {/* {data.map(item => {
+            return (
+              
+            )
+          })} */}
         </ScrollView>
       </SafeAreaView>
     </View>
