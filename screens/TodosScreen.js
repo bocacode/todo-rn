@@ -3,7 +3,6 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
   SafeAreaView,
   ScrollView,
   Alert,
@@ -12,6 +11,9 @@ import {
   ActivityIndicator,
   FlatList,
 } from 'react-native'
+import { ListItem, Avatar, Button, Input } from 'react-native-elements'
+
+import InputForm from '../components/InputForm'
 
 function TodosScreen({ navigation, route }) {
   const [data, setData] = useState()
@@ -31,7 +33,7 @@ function TodosScreen({ navigation, route }) {
 
   return (
     <View style={styles.container}>
-      <SafeAreaView>
+      <SafeAreaView style={{ width: '100%' }}>
         <ScrollView>
           {/* <HomeText myName={myName} /> */}
           {/* <Button
@@ -55,18 +57,22 @@ function TodosScreen({ navigation, route }) {
               // console.log('my button was pressed'), Alert.alert(`hi, ${myName}`)
             }}
           /> */}
-          <Button title='Go to New Todos' onPress={() => navigation.navigate('NewTodo')} />
-
           <TouchableOpacity>
             <Image
-              style={{ width: 200, height: 200 }}
+              style={{ width: 100, height: 100, alignSelf: 'center', marginTop: 30 }}
               source={{
                 uri: 'https://pbs.twimg.com/profile_images/1273306124863889409/MAgy1kHL_400x400.jpg',
               }}
             />
           </TouchableOpacity>
-
-          {isLoading ? (
+          <Button
+            title='Go to New Todos'
+            type='outline'
+            // containerStyle={{ width: 200, alignSelf: 'center', marginVertical: 20 }}
+            buttonStyle={{ width: 200, alignSelf: 'center', marginVertical: 20 }}
+            onPress={() => navigation.navigate('NewTodo')}
+          />
+          {/* {isLoading ? (
             <ActivityIndicator />
           ) : (
             data.map(todoItem => {
@@ -80,21 +86,41 @@ function TodosScreen({ navigation, route }) {
                 )
               }
             })
-          )}
-
-          {isLoading ? (
+          )} */}
+          {/* {isLoading ? (
             <ActivityIndicator />
           ) : (
             <FlatList
               data={data}
               keyExtractor={({ id }) => id}
-              renderItem={({ item }) => (
-                <Text>
-                  {item.item}
-                </Text>
-              )}
+              renderItem={({ item }) => <Text>{item.item}</Text>}
             />
-          )}
+          )} */}
+          {/* <InputForm /> */}
+          <View>
+            <Input placeholder='new Todo' />
+          </View>
+          <View>
+            {isLoading ? (
+              <ActivityIndicator />
+            ) : (
+              data.map((x, i) => (
+                <ListItem key={i} bottomDivider>
+                  <Avatar
+                    source={{
+                      uri:
+                        'https://mymodernmet.com/wp/wp-content/uploads/2020/10/cooper-baby-corgi-dogs-8.jpg',
+                    }}
+                  />
+                  <ListItem.Content>
+                    <ListItem.Title>=> {x.item} </ListItem.Title>
+                    <ListItem.Subtitle>{x.id}</ListItem.Subtitle>
+                  </ListItem.Content>
+                  <ListItem.Chevron />
+                </ListItem>
+              ))
+            )}
+          </View>
         </ScrollView>
       </SafeAreaView>
     </View>
@@ -109,6 +135,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     // paddingVertical: 100
     // paddingVertical: '10%',
+    width: '100%',
   },
   heading: {
     color: 'rgb(255, 105, 180)',
