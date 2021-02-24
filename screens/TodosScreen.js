@@ -8,21 +8,35 @@ import {
   ScrollView,
   Alert,
   Image,
+  ListItem,
+  FlatList,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native'
 
 function TodosScreen({ navigation, route }) {
   const [data, setData] = useState()
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    console.log('here is data', data)
+    fetch('https://todo-too-rb-api.web.app/tasks/3m5rYt8z2fQKDDm0wlgrxg3hFh82')
+      .then(res => res.json())
+      .then(json => {
+        setData(json)
+      })
+      .catch(err => console.log(err))
+      .finally(() => setIsLoading(false))
   }, [])
 
   const getData = () => {
+    console.log('get data was ran')
     fetch('https://todo-too-rb-api.web.app/tasks/3m5rYt8z2fQKDDm0wlgrxg3hFh82')
-      // .then(resp => console.log(resp.json()))
-      .then(res => setData(res.json()))
+      .then(res => res.json())
+      .then(json => {
+        setData(json)
+      })
       .catch(err => console.log(err))
+      .finally(() => setIsLoading(false))
   }
 
   const { name } = route
@@ -53,6 +67,7 @@ function TodosScreen({ navigation, route }) {
               // console.log('my button was pressed'), Alert.alert(`hi, ${myName}`)
             }}
           />
+          <Button title='get me some API' onPress={() => getData()} />
           <TouchableOpacity onPress={() => navigation.navigate('NewTodo')}>
             <Image
               style={{ width: 200, height: 200 }}
@@ -63,11 +78,40 @@ function TodosScreen({ navigation, route }) {
           </TouchableOpacity>
           <Text>no place like => {name}</Text>
 
-          {/* {data.map(item => {
-            return (
-              
-            )
-          })} */}
+          {/* {
+            data.map(item => {
+              console.log(item)
+              return <Text>{item.item}</Text>
+            })} */}
+          {/* {isLoading ? (
+            <ActivityIndicator />
+          ) : (
+            <FlatList
+              data={data}
+              keyExtractor={({ id }, index) => id}
+              renderItem={({ item }) => (
+                <Text>
+                  {item.item}, =>  {item.done}
+                </Text>
+              )}
+            />
+          )} */}
+
+          {isLoading ? (
+            <ActivityIndicator />
+          ) : (
+            data.map((p, i) => {
+              // console.log('image id here', i)
+              if (data) {
+                return (
+                  <View key={i}>
+                    <Text>{p.item}</Text>
+                  </View>
+                )
+              }
+            })
+          )}
+          
         </ScrollView>
       </SafeAreaView>
     </View>
