@@ -9,21 +9,23 @@ import {
   Alert,
   Image,
   TouchableOpacity,
+  ActivityIndicator,
+  FlatList,
 } from 'react-native'
 
 function TodosScreen({ navigation, route }) {
   const [data, setData] = useState()
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    console.log('here is data', data)
-  }, [])
-
-  const getData = () => {
     fetch('https://todo-too-rb-api.web.app/tasks/3m5rYt8z2fQKDDm0wlgrxg3hFh82')
-      // .then(resp => console.log(resp.json()))
-      .then(res => setData(res.json()))
+      .then(res => res.json())
+      .then(json => {
+        setData(json)
+        setIsLoading(false)
+      })
       .catch(err => console.log(err))
-  }
+  }, [])
 
   const { name } = route
 
@@ -32,7 +34,7 @@ function TodosScreen({ navigation, route }) {
       <SafeAreaView>
         <ScrollView>
           {/* <HomeText myName={myName} /> */}
-          <Button
+          {/* <Button
             title='Button'
             color='red'
             onPress={() => {
@@ -52,8 +54,10 @@ function TodosScreen({ navigation, route }) {
                 )
               // console.log('my button was pressed'), Alert.alert(`hi, ${myName}`)
             }}
-          />
-          <TouchableOpacity onPress={() => navigation.navigate('NewTodo')}>
+          /> */}
+          <Button title='Go to New Todos' onPress={() => navigation.navigate('NewTodo')} />
+
+          <TouchableOpacity>
             <Image
               style={{ width: 200, height: 200 }}
               source={{
@@ -61,13 +65,36 @@ function TodosScreen({ navigation, route }) {
               }}
             />
           </TouchableOpacity>
-          <Text>no place like => {name}</Text>
 
-          {/* {data.map(item => {
-            return (
-              
-            )
-          })} */}
+          {isLoading ? (
+            <ActivityIndicator />
+          ) : (
+            data.map(todoItem => {
+              if (data) {
+                return (
+                  <View key={todoItem.id}>
+                    <Text>
+                      {todoItem.item}, {todoItem.id}
+                    </Text>
+                  </View>
+                )
+              }
+            })
+          )}
+
+          {isLoading ? (
+            <ActivityIndicator />
+          ) : (
+            <FlatList
+              data={data}
+              keyExtractor={({ id }) => id}
+              renderItem={({ item }) => (
+                <Text>
+                  {item.item}
+                </Text>
+              )}
+            />
+          )}
         </ScrollView>
       </SafeAreaView>
     </View>
